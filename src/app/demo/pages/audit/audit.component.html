@@ -1,0 +1,127 @@
+<div class="container mt-4">
+  <h2>Auditoría Inventario (Resumen y Detalle)</h2>
+
+  <!-- Filtros -->
+  <div class="row g-3 mb-3">
+    <div class="col-sm-3">
+      <label class="form-label">Almacén (zoneNo)</label>
+      <input type="text" class="form-control" [(ngModel)]="zoneNo" placeholder="Ej: PT">
+    </div>
+    <div class="col-sm-3">
+      <label class="form-label">Material (matCode)</label>
+      <input type="text" class="form-control" [(ngModel)]="matCode" placeholder="Opcional">
+    </div>
+    <div class="col-sm-3">
+      <label class="form-label">Estado (matStatus)</label>
+      <input type="text" class="form-control" [(ngModel)]="matStatus" placeholder="Opcional">
+    </div>
+    <div class="col-sm-2 d-flex align-items-end">
+      <button class="btn btn-primary" (click)="fetchAudit()">Buscar</button>
+    </div>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="my-3 text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Tabla de Resumen -->
+  <h3>Resumen por Material/Almacén</h3>
+  <table class="table table-bordered table-striped" *ngIf="!loading && summary.length">
+    <thead>
+      <tr>
+        <th>ZoneNo</th>
+        <th>MatCode</th>
+        <th>MatName</th>
+        <th>WMS Qty (Suma)</th>
+        <th>SAP Qty (Suma)</th>
+        <th>Difference</th>
+        <th>Desglose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let row of summary">
+        <tr (click)="row.expanded = !row.expanded">
+          <td>{{ row.zoneNo }}</td>
+          <td>{{ row.matCode }}</td>
+          <td>{{ row.matName }}</td>
+          <td>{{ row.wmsQty }}</td>
+          <td>{{ row.sapQtyTotal }}</td>
+          <td [ngStyle]="{'color': row.difference !== 0 ? 'red' : 'green'}">
+            {{ row.difference }}
+          </td>
+          <td>
+            <!-- Evita que el click del botón dispare la expansión de la fila -->
+            <button type="button" class="btn btn-link" (click)="toggleBreakdown(row); $event.stopPropagation();">
+              {{ row.expanded ? 'Ocultar' : 'Ver Breakdown' }}
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="row.expanded">
+          <td colspan="7">
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>WhsCode</th>
+                  <th>SAP Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let b of row.breakdown">
+                  <td>{{ b.whsCode }}</td>
+                  <td>{{ b.sapQty }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && summary.length === 0" class="text-muted">
+    Sin datos de Resumen
+  </p>
+
+  <hr>
+
+  <!-- Tabla de Detalle -->
+  <h3>Detalle de Movimientos (WMS)</h3>
+  <table class="table table-hover" *ngIf="!loading && detail.length">
+    <thead>
+      <tr>
+        <th>BillNo</th>
+        <th>DocType</th>
+        <th>MatCode</th>
+        <th>MatName</th>
+        <th>WMS Qty</th>
+        <th>ZoneNo</th>
+        <th>MatBatch</th>
+        <th>TrayNo</th>
+        <th>CreateTime</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of detail">
+        <td>{{ d.billNo }}</td>
+        <td>{{ d.docType }}</td>
+        <td>{{ d.matCode }}</td>
+        <td>{{ d.matName }}</td>
+        <td>{{ d.wmsQty }}</td>
+        <td>{{ d.zoneNo }}</td>
+        <td>{{ d.matBatch }}</td>
+        <td>{{ d.trayNo }}</td>
+        <td>{{ d.createTime }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && detail.length === 0" class="text-muted">
+    Sin movimientos en Detalle
+  </p>
+</div>

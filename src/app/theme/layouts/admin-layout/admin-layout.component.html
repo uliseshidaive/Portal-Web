@@ -1,0 +1,219 @@
+<!-- NAVEGACIÓN LATERAL -->
+<app-navigation
+  class="pc-sidebar"
+  [ngClass]="{
+    'navbar-collapsed': navCollapsed,
+    'mob-open': navCollapsedMob
+  }"
+  (NavCollapse)="navCollapsed = !navCollapsed"
+></app-navigation>
+
+<!-- NAVBAR SUPERIOR -->
+<app-nav-bar
+  (NavCollapsedMob)="navMobClick()"
+  (NavCollapse)="navCollapsed = !navCollapsed"
+></app-nav-bar>
+
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="pc-container">
+  <div class="coded-wrapper">
+    <div class="coded-content">
+      <div class="coded-inner-content">
+        <app-breadcrumb></app-breadcrumb>
+
+        <!-- Sección principal -->
+        <div class="main-body">
+          <div class="page-wrapper">
+            <div class="container mt-4">
+              <h2 class="mb-4 text-center">Dashboard - Resumen de WMS de Hoy</h2>
+
+              <!-- Mensajes de error y loading -->
+              <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+              </div>
+              <div *ngIf="loading" class="text-center m-3">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+              </div>
+
+              <!-- SECCIÓN DE KPI -->
+              <!-- Entradas -->
+              <section>
+                <h3 class="mb-3">Entradas</h3>
+                <div class="row g-4">
+                  <!-- Entrada Producto Terminado (PT) -->
+                  <div class="col-md-6">
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-primary text-white text-center">
+                        Entrada Producto Terminado (PT)
+                      </div>
+                      <div class="card-body">
+                        <div class="row text-center">
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Pendientes</small>
+                              <h4>{{ inboundKpiPT.pending }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Procesando</small>
+                              <h4>{{ inboundKpiPT.processing }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Completados</small>
+                              <h4>{{ inboundKpiPT.processed }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3" [ngClass]="{'bg-danger text-white': inboundKpiPT.abnormal > 0}">
+                            <div class="border rounded p-2">
+                              <small>Anormales</small>
+                              <h4>{{ inboundKpiPT.abnormal }}</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Entrada Materia Prima (MT) -->
+                  <div class="col-md-6">
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-success text-white text-center">
+                        Entrada Materia Prima (MP)
+                      </div>
+                      <div class="card-body">
+                        <div class="row text-center">
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Pendientes</small>
+                              <h4>{{ inboundKpiMT.pending }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Procesando</small>
+                              <h4>{{ inboundKpiMT.processing }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Completados</small>
+                              <h4>{{ inboundKpiMT.processed }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3" [ngClass]="{'bg-danger text-white': inboundKpiMT.abnormal > 0}">
+                            <div class="border rounded p-2">
+                              <small>Anormales</small>
+                              <h4>{{ inboundKpiMT.abnormal }}</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Salidas -->
+              <section class="mt-5">
+                <h3 class="mb-3">Salidas</h3>
+                <div class="row g-4">
+                  <!-- Salida Producto Terminado (PT) -->
+                  <div class="col-md-6">
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-info text-white text-center">
+                        Salida Producto Terminado (PT)
+                      </div>
+                      <div class="card-body">
+                        <div class="row text-center">
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Pendientes</small>
+                              <h4>{{ outboundKpiPT.pending }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Procesando</small>
+                              <h4>{{ outboundKpiPT.processing }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Completados</small>
+                              <h4>{{ outboundKpiPT.processed }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3" [ngClass]="{'bg-danger text-white': outboundKpiPT.abnormal > 0}">
+                            <div class="border rounded p-2">
+                              <small>Anormales</small>
+                              <h4>{{ outboundKpiPT.abnormal }}</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Salida Materia Prima (MT) -->
+                  <div class="col-md-6">
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-warning text-white text-center">
+                        Salida Materia Prima (MP)
+                      </div>
+                      <div class="card-body">
+                        <div class="row text-center">
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Pendientes</small>
+                              <h4>{{ outboundKpiMT.pending }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Procesando</small>
+                              <h4>{{ outboundKpiMT.processing }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3">
+                            <div class="border rounded p-2">
+                              <small>Completados</small>
+                              <h4>{{ outboundKpiMT.processed }}</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-md-3 mb-3" [ngClass]="{'bg-danger text-white': outboundKpiMT.abnormal > 0}">
+                            <div class="border rounded p-2">
+                              <small>Anormales</small>
+                              <h4>{{ outboundKpiMT.abnormal }}</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <!-- FIN SECCIÓN KPI -->
+            </div>
+          </div>
+        </div>
+        <!-- Fin main-body -->
+      </div>
+    </div>
+  </div>
+  <div
+    class="pc-menu-overlay"
+    (click)="closeMenu()"
+    (keydown)="handleKeyDown($event)"
+    tabindex="0"
+  ></div>
+</div>
+<router-outlet></router-outlet>
+
+<!-- FOOTER -->
+<footer class="pc-footer"></footer>
+
+<!-- CONFIGURACIÓN EXTRA -->
+<!-- <app-configuration></app-configuration> -->

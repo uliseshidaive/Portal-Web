@@ -1,0 +1,86 @@
+<div class="container mt-4">
+  <h2>Detalle de Documento Inbound</h2>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="my-3 text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Datos de cabecera -->
+  <div *ngIf="!loading && header" class="mb-4">
+    <h4>Información del Documento</h4>
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body">
+        <p><strong>DocNum:</strong> {{ header.billNo }}</p>
+        <p><strong>Fecha Documento:</strong> {{ header.docDate | date:'short' }}</p>
+        <p><strong>WMS Status:</strong> {{ header.wmsStatus }}</p>
+        <p><strong>Cantidad:</strong> {{ header.supplyerId }}</p>
+        <p><strong>Fecha de Última Actualización:</strong> {{ header.supplyerName }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla con toda la información del detalle -->
+  <div *ngIf="!loading && lines?.length">
+    <h4>Detalle Completo</h4>
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>DocNum</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Estado</th>
+            <th>Zona</th>
+            <th>Bill Detail No</th>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Lote</th>
+            <th>Proveedor ID</th>
+            <th>Proveedor Nombre</th>
+            <th>Estatus Material</th>
+            <th>Fecha Manufactura</th>
+            <th>Fecha Expiración</th>
+            <th>Fecha Admisión</th>
+            <th>Fuente Doc</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let line of lines">
+            <td>{{ line.billNo }}</td>
+            <td>{{ line.Origen }}</td>
+            <td>{{ line.Destino }}</td>
+            <td>{{ line.billState }}</td>
+            <td>{{ line.zoneNo }}</td>
+            <td>{{ line.billDetailNo }}</td>
+            <td>{{ line.matCode }}</td>
+            <td>{{ line.matName }}</td>
+            <td>{{ line.matNum }}</td>
+            <td>{{ line.matBatch }}</td>
+            <td>{{ line.supplyerId }}</td>
+            <td>{{ line.supplyerName }}</td>
+            <td [ngClass]="{'text-danger': line.matStatus === '0'}">
+              {{ line.matStatus === '1' ? 'Aprobado' : line.matStatus }}
+            </td>
+            <td>{{ line.matDateManufacturing | date:'shortDate' }}</td>
+            <td>{{ line.matDateExpiration | date:'shortDate' }}</td>
+            <td>{{ line.matDateAdmission | date:'shortDate' }}</td>
+            <td>{{ line.docSource }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p *ngIf="!loading && (!lines || lines.length === 0)" class="text-muted">
+    Sin líneas que mostrar.
+  </p>
+</div>

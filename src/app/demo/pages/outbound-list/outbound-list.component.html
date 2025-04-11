@@ -1,0 +1,98 @@
+<div class="container mt-4">
+    <h2>Documentos Outbound</h2>
+  
+    <!-- Sección de Filtros -->
+    <div class="row g-3 mb-3">
+      <div class="col-sm-3">
+        <label class="form-label">Estatus (WMS)</label>
+        <select class="form-select" [(ngModel)]="status">
+          <option value="">Todos</option>
+          <option value="Open">Open</option>
+          <option value="Completed">Completed</option>
+          <option value="Abnormal">Abnormal</option>
+        </select>
+      </div>
+  
+      <div class="col-sm-3">
+        <label class="form-label">Almacén (whsCode)</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="whsCode"
+          placeholder="e.g. MP"
+        />
+      </div>
+  
+      <!-- Fechas (opcionales) -->
+      <div class="col-sm-3">
+        <label class="form-label">Fecha Desde</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="dateFrom"
+        />
+      </div>
+      <div class="col-sm-3">
+        <label class="form-label">Fecha Hasta</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="dateTo"
+        />
+      </div>
+  
+      <!-- Botones de Búsqueda/Reset -->
+      <div class="col-sm-12 d-flex gap-2">
+        <button class="btn btn-primary" (click)="fetchOutboundDocs()">Buscar</button>
+        <button class="btn btn-outline-secondary" (click)="resetFilters()">Limpiar</button>
+      </div>
+    </div>
+  
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Loader -->
+    <div *ngIf="loading" class="my-3 text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  
+    <!-- Tabla de resultados -->
+    <table class="table table-hover" *ngIf="!loading && documents?.length">
+      <thead>
+        <tr>
+          <th>DocNum</th>
+          <th>DocDate</th>
+          <th>WMS Status</th>
+          <th>Cantidad</th>
+          <th>Fecha Última Actualización</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of documents">
+          <td>{{ doc.billNo }}</td>
+          <td>{{ doc.docDate | date }}</td>
+          <td [ngClass]="{'text-danger': doc.wmsStatus === 'Abnormal'}">
+            {{ doc.wmsStatus }}
+          </td>
+          <td>{{ doc.customerId }}</td>
+          <td>{{ doc.customerName }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="goToDetail(doc.billNo)">
+              Ver Detalle
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Mensaje si no hay resultados -->
+    <p *ngIf="!loading && !documents?.length" class="text-muted">
+      No hay resultados.
+    </p>
+  </div>
+  

@@ -1,0 +1,6 @@
+/* Si quieres cambiar el color de la opción activa, sobrescribe la clase .active */
+.nav-pills .nav-link.active {
+    background-color: #0d6efd !important; /* color principal */
+    color: #fff !important;
+  }
+  

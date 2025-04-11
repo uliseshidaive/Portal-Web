@@ -1,0 +1,46 @@
+<!-- auth-login.component.html -->
+<div class="auth-wrapper d-flex align-items-center justify-content-center" style="height: 100vh;">
+  <div class="card" style="width: 400px;">
+    <div class="card-body">
+      <h3 class="mb-4">Login</h3>
+
+      <!-- Campo Usuario/Email -->
+      <div class="mb-3">
+        <label for="username" class="form-label">Usuario / Email</label>
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="username"
+          name="username"
+          class="form-control"
+          placeholder="Ingresa tu usuario o email"
+        />
+      </div>
+
+      <!-- Campo Contraseña -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          class="form-control"
+          placeholder="Ingresa tu contraseña"
+        />
+      </div>
+
+      <!-- Mostrar error en caso de credenciales inválidas -->
+      <div *ngIf="errorMessage" class="text-danger mb-3">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Botón de Login -->
+      <div class="d-grid">
+        <button class="btn btn-primary" (click)="onSubmit()">Iniciar Sesión</button>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
